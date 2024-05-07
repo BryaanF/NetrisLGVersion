@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     justifyContent: "center",
+    borderRadius: 90
   },
 });
 
@@ -25,6 +26,7 @@ const Profile = (props) => {
           style={{
             fontFamily: "Inter_600SemiBold",
             fontSize: 16,
+            color: "white"
           }}
         >
           Halo, {props.name}
@@ -33,9 +35,10 @@ const Profile = (props) => {
           style={{
             fontFamily: "Inter_400Regular",
             fontSize: 13,
+            color: 'white'
           }}
         >
-          Hati hati dijalan :)
+          We are thrilled to have you here!
         </Text>
       </View>
     </>
