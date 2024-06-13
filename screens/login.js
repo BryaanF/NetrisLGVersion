@@ -52,6 +52,7 @@ const Login = ({ navigation }) => {
           op={() => navigation.navigate("HomeTab")}
         />
         <Separator h={15} />
+        
         <Text
           style={{
             fontFamily: "Inter_400Regular",
@@ -68,6 +69,22 @@ const Login = ({ navigation }) => {
           left={true}
           text={"Continue with Facebook"}
           iconName={"facebook-square"}
+        />
+        <Separator h={15} />
+        <Text
+          style={{
+            fontFamily: "Inter_400Regular",
+            fontSize: 14,
+            color: "#774494",
+          }}
+        >
+          Or
+        </Text>
+        <Separator h={15} />
+        <Button
+          left={false}
+          text={"Enter as a Guest"}
+          op={() => navigation.navigate("HomeTab")}
         />
       </View>
     </View>

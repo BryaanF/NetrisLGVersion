@@ -3,23 +3,76 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   FlatList,
   Dimensions,
   Image,
 } from "react-native";
-import { TextInput } from "react-native-paper";
-import { Separator, Button, AuthTextInput, PwdInput } from "../components";
+import { Separator } from "../components";
 import React, { useState, useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
 import * as Location from "expo-location";
+import { FontAwesome } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
   },
+  starContainer: {
+    flexDirection: 'row',
+  },
+  itemContainer: {
+    height: Dimensions.get("window").height * 0.40,
+    width: Dimensions.get("window").width * 0.8,
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 2,
+    borderColor: "#A7A7A7",
+    marginHorizontal: 15,
+    marginVertical: 20,
+  },
+  itemImage: {
+    width: "100%",
+    height: "100%",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  itemTextContainer: {
+    flex: 1.3,
+    paddingLeft: 10,
+    justifyContent: "center",
+  },
+  itemTitle: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+    color: "#5A1781",
+  },
+  itemText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+  },
+  bulletPoint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bulletText: {
+    fontSize: 12,
+    fontFamily: "Inter_400Regular",
+  },
 });
+
+const StarRating = ({ rating }) => {
+  // Buat array dengan panjang sesuai dengan nilai rating
+  const stars = Array(rating).fill(null);
+
+  return (
+    <View style={styles.starContainer}>
+      {stars.map((_, index) => (
+        <FontAwesome key={index} name="star" size={24} color="#ffe234" />
+      ))}
+    </View>
+  );
+};
 
 const Nerby = ({ navigation }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -41,54 +94,58 @@ const Nerby = ({ navigation }) => {
       }
     };
     fetchCurrentLocation();
-  });
-
-  const windowWidth = Dimensions.get("window").width;
-  const windowHeight = Dimensions.get("window").height;
+  }, []);
 
   const listTambalBan = [
     {
       id: 0,
-      nama: "Tambal ban cak imin",
+      nama: "Tambal Ban Goldy",
       tipe: "Bengkel motor",
+      rating: 5,
       alamat: "Jl bareng cuma temen",
+      fasilitas : [
+        'Tambal ban tubles',
+        'Pompa angin ban',
+        'Bengkel',
+      ]
     },
     {
       id: 1,
-      nama: "Tambal ban jetis kulon",
+      nama: "Tambal Ban Praba",
       tipe: "Bengkel motor",
+      rating: 3,
       alamat: "Jl bareng cuma temen",
+      fasilitas : [
+        'Tambal ban biasa',
+        'Isi angin',
+        'Bengkel',
+      ]
     },
     {
       id: 2,
-      nama: "Tambal ban mas bro",
-      tipe: "Bengkel motor",
+      nama: "Tambal Ban Chandra",
+      tipe: "Bengkel Mobil",
+      rating: 4,
       alamat: "Jl bareng cuma temen",
+      fasilitas : [
+        'Tambal ban mobil',
+        'Isi nitrogen',
+        'Bengkel',
+      ]
     },
     {
-      id: 3,
-      nama: "Tambal ban sis",
-      tipe: "Bengkel mobil",
+      id: 2,
+      nama: "Tambal Ban Subagyo",
+      tipe: "Bengkel motor dan mobil",
+      rating: 5,
       alamat: "Jl bareng cuma temen",
+      fasilitas : [
+        'Tambal ban mobil',
+        'Isi nitrogen',
+        'Tambal ban tubles',
+      ]
     },
-    {
-      id: 4,
-      nama: "Tambal ban pak dono",
-      tipe: "Bengkel mobil",
-      alamat: "Jl bareng cuma temen",
-    },
-    {
-      id: 5,
-      nama: "Tambal ban banjaya",
-      tipe: "Bengkel motor",
-      alamat: "Jl bareng cuma temen",
-    },
-    {
-      id: 6,
-      nama: "Tambal ban barokah",
-      tipe: "Bengkel motor",
-      alamat: "Jl bareng cuma temen",
-    },
+    // Tambahkan data lainnya jika diperlukan
   ];
 
   const renderItem = ({ item, index }) => {
@@ -97,58 +154,33 @@ const Nerby = ({ navigation }) => {
         onPress={() => {
           setChooseItem(item.id);
         }}
-        style={{
-          height: windowHeight * 0.22,
-          width: windowWidth * 0.8,
-          borderRadius: 10,
-          backgroundColor: index === chooseItem ? "#DCCDE5" : "#FFFFFF",
-          borderWidth: 2,
-          borderColor: "#A7A7A7",
-          marginHorizontal: 15,
-          marginVertical: 20,
-        }}
+        style={[
+          styles.itemContainer,
+          { backgroundColor: index === chooseItem ? "#DCCDE5" : "#FFFFFF" },
+        ]}
       >
         <View style={{ flex: 1 }}>
           <Image
-            style={{
-              width: "100%",
-              height: "100%",
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-            }}
+            style={styles.itemImage}
             source={require("../assets/tambalBan.jpg")}
           />
         </View>
-        <View style={{ flex: 1.3, paddingLeft: 10, justifyContent: "center" }}>
-          <Text
-            style={{
-              fontFamily: "Inter_700Bold",
-              fontSize: 16,
-              color: "#5A1781",
-            }}
-          >
-            {item.nama}
-          </Text>
+        <View style={styles.itemTextContainer}>
+          <Text style={styles.itemTitle}>{item.nama}</Text>
           <Separator h={3} />
-          <Text
-            style={{
-              fontFamily: "Inter_400Regular",
-              fontSize: 12,
-              // color: "#774494",
-            }}
-          >
-            {item.tipe}
-          </Text>
+          <StarRating rating={item.rating} />
           <Separator h={3} />
-          <Text
-            style={{
-              fontFamily: "Inter_400Regular",
-              fontSize: 12,
-              // color: "#774494",
-            }}
-          >
-            {item.alamat}
-          </Text>
+          <Text style={styles.itemText}>{item.tipe}</Text>
+          <Separator h={3} />
+          <Text style={styles.itemText}>{item.alamat}</Text>
+          <Separator h={3} />
+          <Text style={styles.itemText}>Fasilitas :</Text>
+          {item.fasilitas.map((fasilitas, index) => (
+            <View key={index} style={styles.bulletPoint}>
+              <Text style={styles.bulletText}>• </Text>
+              <Text style={styles.bulletText}>{fasilitas}</Text>
+            </View>
+          ))}
         </View>
       </TouchableOpacity>
     );
@@ -169,13 +201,11 @@ const Nerby = ({ navigation }) => {
           style={{ width: "100%", height: "100%" }}
         ></MapView>
       </View>
-      <View
-        style={{ flex: 1.5, justifyContent: "center", alignItems: "center" }}
-      >
+      <View style={{ flex: 3, justifyContent: "center", alignItems: "center" }}>
         <FlatList
           data={listTambalBan}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         />
